@@ -23,9 +23,9 @@ def dessine_arbre(depart, angle, distance, n):
         dessine_segment(depart, angle, distance)
         return 0
     else :
-        a1 = (random.uniform(angle-30, angle+30))%360
-        a2 = (random.uniform(angle-30, angle+30))%360
-        a3 = (random.uniform(angle-30, angle+30))%360
+        a1 = (random.uniform(angle-20, angle+20))%360
+        a2 = (random.uniform(angle-20, angle+20))%360
+        a3 = (random.uniform(angle-20, angle+20))%360
         p1 = (depart[0] + distance*cos((pi*a1)/180), depart[1] + distance*sin((pi*a1)/180))
         p2 = (depart[0] + distance*cos((pi*a2)/180), depart[1] + distance*sin((pi*a2)/180))
         p3 = (depart[0] + distance*cos((pi*a3)/180), depart[1] + distance*sin((pi*a3)/180))
@@ -36,18 +36,20 @@ def dessine_arbre(depart, angle, distance, n):
                 dessine_arbre(p2, a2, distance*9/10, n-1),
                 dessine_arbre(p3, a3, distance*9/10, n-1))
 
-SORTIE_STANDARD = False
 
-# On choisit où est-ce que l'on va faire nos prints
-if SORTIE_STANDARD:
-    out = sys.stdout
-else:
-    out = open("mon_image2.svg", "w")
 
-print(svg.genere_balise_debut_image(100, 100))
-print(svg.genere_balise_debut_groupe("black", "none", 3))
+def main():
+    """On génère un SVG kaléidoscopique à partir d'un nombre de triangles"""
+    if len(sys.argv) != 2 or sys.argv[1] == "-h" or sys.argv[1] == "--help":
+        print("utilisation:", sys.argv[0], "nombre_arbres > image2.svg")
+        sys.exit(1)
 
-dessine_arbre((0,0), 270, 40, 10)
+    nombre_arbres = int(sys.argv[1])
+    print(svg.genere_balise_debut_image(800, 800))
+    print(svg.genere_balise_debut_groupe("black", "none", 3))
+    dessine_arbre((400,400), 270, 50, nombre_arbres)
+    print(svg.genere_balise_fin_groupe())
+    print(svg.genere_balise_fin_image())
 
-print(svg.genere_balise_fin_groupe())
-print(svg.genere_balise_fin_image())
+if __name__ == "__main__":
+    main()
